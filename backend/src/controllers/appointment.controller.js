@@ -3,6 +3,7 @@ import Service from '../models/service.model.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 import { body, validationResult } from 'express-validator';
 import { AppError } from '../utils/errorHandler.js';
+import { startOfMinute } from 'date-fns'; // ✅ Make sure this is imported
 
 export const getAllAppointments = asyncHandler(async (req, res) => {
     const appointments = await Appointment.find().populate('serviceId', 'name');
@@ -22,19 +23,22 @@ export const createAppointment = [
             return next(new AppError('Invalid input data', 400));
         }
 
-        const { serviceId, customerName, customerEmail, startTime, endTime } = req.body;
+        const { serviceId, customerName, customerEmail } = req.body;
+        let { startTime, endTime } = req.body; // ✅ Use `let`, not `const`, if you're reassigning
 
         const service = await Service.findById(serviceId);
         if (!service) {
             return next(new AppError('Service not found', 404));
         }
+        startTime = startOfMinute(new Date(startTime));
+        endTime = startOfMinute(new Date(endTime));
 
         const existingAppointment = await Appointment.findOne({
             serviceId,
-            $or: [
-                { startTime: { $lt: endTime, $gte: startTime } },
-                { endTime: { $gt: startTime, $lte: endTime } }
-            ]
+            $and: [
+                { startTime: { $lt: endTime } },
+                { endTime: { $gt: startTime } },
+            ],
         });
 
         if (existingAppointment) {
@@ -46,7 +50,7 @@ export const createAppointment = [
             customerName,
             customerEmail,
             startTime,
-            endTime
+            endTime,
         });
 
         res.status(201).json(appointment);
