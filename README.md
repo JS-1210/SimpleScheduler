@@ -98,6 +98,9 @@ PORT=5000
 MONGO_URI=mongodb://localhost:27017/scheduler
 ```
 
+Seed Data: 
+npm run seed
+
 Start backend:
 npm run start
 
