@@ -80,7 +80,7 @@ body {
 }
 
 .serviceForm input {
-  width: 95%;
+  width: 90%;
   padding: 10px 12px;
   margin-bottom: 20px;
   border: 1px solid #ced4da;
@@ -101,4 +101,23 @@ body {
 
 .serviceForm button:hover {
   background-color: #0056b3;
+}
+
+.nav-link {
+  color: #343a40;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.nav-link.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
 }

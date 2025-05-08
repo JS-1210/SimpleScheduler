@@ -114,12 +114,13 @@ const BookAppointment: React.FC = () => {
                 />
 
                 <div className="smart-toggle">
-                    <label>Use Smart Scheduling?</label>
                     <input
                         type="checkbox"
+                        id="smart"
                         checked={isSmart}
                         onChange={() => setIsSmart(!isSmart)}
                     />
+                    <label htmlFor="smart">Use Smart Scheduling?</label>
                 </div>
 
                 {slots.length > 0 && (

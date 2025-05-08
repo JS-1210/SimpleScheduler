@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import ServiceTypes from './components/ServiceTypes';
 import BookAppointment from './pages/BookAppointment';
 import AdminAppointments from './pages/AdminAppointments';
@@ -12,9 +12,15 @@ const App: React.FC = () => {
         <div className="container">
           <div className="logo">SimpleScheduler</div>
           <div className="nav-links">
-            <Link to="/">Admin Services</Link>
-            <Link to="/book">Book Appointment</Link>
-            <Link to="/availability">Admin Appointments</Link>
+            <NavLink to="/" end className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+              Admin Services
+            </NavLink>
+            <NavLink to="/book" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+              Book Appointment
+            </NavLink>
+            <NavLink to="/availability" className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}>
+              Admin Appointments
+            </NavLink>
           </div>
         </div>
       </nav>

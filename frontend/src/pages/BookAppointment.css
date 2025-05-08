@@ -19,7 +19,7 @@
 }
 
 .input {
-    width: 95%;
+    width: 92%;
     padding: 10px;
     margin-bottom: 1rem;
     border: 1px solid #ccc;
@@ -29,8 +29,24 @@
 .smart-toggle {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.smart-toggle input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007bff;
+    position: relative;
+    top: 5px;
+}
+
+.smart-toggle label {
+    margin: 0;
+    white-space: nowrap;
 }
 
 .slots-container {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
@@ -33,6 +33,8 @@ const Availability: React.FC = () => {
     const [email, setEmail] = useState("");
     const [success, setSuccess] = useState(false);
 
+    const formRef = useRef<HTMLDivElement | null>(null);
+
     useEffect(() => {
         const fetchServices = async () => {
             try {
@@ -61,12 +63,24 @@ const Availability: React.FC = () => {
         }
     }, [selectedServiceId, weekStart]);
 
+    useEffect(() => {
+        if (selectedSlot) {
+            formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            setTimeout(() => {
+                const nameInput = document.getElementById("name") as HTMLInputElement;
+                if (nameInput) nameInput.focus();
+            }, 300);
+        }
+    }, [selectedSlot]);
+
     const isSlotBooked = (start: string, end: string) => {
         return appointments
-            .filter(appt => appt.serviceId?._id === selectedServiceId)
-            .some(appt =>
-                dayjs(appt.startTime).isSame(start, 'minute') &&
-                dayjs(appt.endTime).isSame(end, 'minute')
+            .filter((appt) => appt.serviceId?._id === selectedServiceId)
+            .some(
+                (appt) =>
+                    dayjs(appt.startTime).isSame(start, "minute") &&
+                    dayjs(appt.endTime).isSame(end, "minute")
             );
     };
 
@@ -107,7 +121,7 @@ const Availability: React.FC = () => {
     };
 
     const renderTimeGrid = () => {
-        const service = services.find(s => s._id === selectedServiceId);
+        const service = services.find((s) => s._id === selectedServiceId);
         if (!service) return null;
 
         const duration = service.durationMinutes;
@@ -206,30 +220,34 @@ const Availability: React.FC = () => {
                 <tbody>{renderTimeGrid()}</tbody>
             </table>
 
+            {/* Form section */}
             {selectedSlot && (
-                <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
-                    <h3>Book Slot</h3>
-                    <p>
-                        <strong>Selected:</strong>{" "}
-                        {dayjs(selectedSlot.startTime).format("ddd, MMM D • h:mm A")}
-                    </p>
-                    <input
-                        type="text"
-                        placeholder="Your name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="email"
-                        placeholder="Your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Book</button>
-                    {success && <p style={{ color: "green" }}>Booking successful!</p>}
-                </form>
+                <div ref={formRef} style={{ marginTop: "2rem" }}>
+                    <form onSubmit={handleSubmit}>
+                        <h3>Book Slot</h3>
+                        <p>
+                            <strong>Selected:</strong>{" "}
+                            {dayjs(selectedSlot.startTime).format("ddd, MMM D • h:mm A")}
+                        </p>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Your name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        <input
+                            type="email"
+                            placeholder="Your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <button type="submit">Book</button>
+                        {success && <p style={{ color: "green" }}>Booking successful!</p>}
+                    </form>
+                </div>
             )}
         </div>
     );
