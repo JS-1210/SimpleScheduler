@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import toast, { Toaster } from "react-hot-toast";
 
 dayjs.extend(weekday);
 dayjs.extend(isSameOrAfter);
@@ -87,10 +88,11 @@ const Availability: React.FC = () => {
                 endTime: selectedSlot.endTime,
             });
 
-            setSuccess(true);
+            toast.success("Appointment booked successfully!");
             setName("");
             setEmail("");
             setSelectedSlot(null);
+            setSuccess(true);
 
             const from = weekStart.startOf("day").toISOString();
             const to = weekStart.add(6, "day").endOf("day").toISOString();
@@ -99,6 +101,7 @@ const Availability: React.FC = () => {
             });
             setAppointments(res.data);
         } catch (err) {
+            toast.error("Error booking appointment");
             console.error("Booking error:", err);
         }
     };
@@ -166,6 +169,7 @@ const Availability: React.FC = () => {
 
     return (
         <div style={{ padding: "2rem" }}>
+            <Toaster />
             <h2>Weekly Availability</h2>
 
             <div style={{ marginBottom: "1rem" }}>

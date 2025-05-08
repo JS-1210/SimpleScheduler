@@ -69,6 +69,13 @@ const BookAppointment: React.FC = () => {
             setName("");
             setEmail("");
             setSelectedSlot(null);
+
+            const url = isSmart
+                ? `/api/availability/smart?date=${selectedDate}&serviceId=${selectedServiceId}`
+                : `/api/availability?date=${selectedDate}&serviceId=${selectedServiceId}`;
+
+            const res = await axios.get(url);
+            setSlots(res.data);
         } catch {
             toast.error("Error booking appointment");
         }
