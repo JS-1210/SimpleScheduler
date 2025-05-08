@@ -194,7 +194,7 @@ const Availability: React.FC = () => {
                 >
                     {services.map((s) => (
                         <option key={s._id} value={s._id}>
-                            {s.name} - ₹{s.price}
+                            {s.name} - ${s.price}
                         </option>
                     ))}
                 </select>
